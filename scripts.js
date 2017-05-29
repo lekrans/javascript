@@ -5,13 +5,28 @@ function log(msg) {
 //===============================================================
 //_CURRYING
 //===============================================================
+
+/*eS5 STYLE
+var curryIt = function(uncurried) {
+  var parameters = Array.prototype.slice.call(arguments, 1);
+  return function() {
+    return uncurried.apply(this, parameters.concat(
+      Array.prototype.slice.call(arguments, 0)
+    ));
+  };
+};
+*/
+
+//notes!!! to go from es5 to es6 i had to 
+//1) use spread operators ...args
+//2) remove the splice things.. because we are already dealing with arrays
+//3) Arrow notation on return function
+//4) Use Reflect.apply on 'func'
+//5) explode the ...args and ...args2 into a new array
+
 function curryIt(func, ...args) {
-  const parameters = args.slice();
-
   return (...args2) => {
-    const params = parameters.concat(args2.slice());
-
-    return Reflect.apply(func, null, params);
+    return Reflect.apply(func, null, [...args, ...args2]);
   };
 }
 
